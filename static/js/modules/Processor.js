@@ -21,6 +21,9 @@ class Processor {
         this.cellZone = new CellZone();
         this.stopButton = $('#stop');
         this.enableEndCheck = $('#enable-end');
+        this.drawButton = $("#draw-button");
+        this.eraseButton = $("#erase");
+        this.stepButton = $('#step');
         this.events();
         this.initialized = false;
         this.painting = false
@@ -39,10 +42,15 @@ class Processor {
         this.stopButton.on('click', () => { this.stop = true;});
         this.enableEndCheck.on('click', this.enableEnd.bind(this));
         this.cellSizeInput.on('input', () =>{ this.stop = true; this.resize()})
+        this.stepButton.on('click', this.step.bind(this));
+
     }
     enableEnd(){
         if (!this.enableEndCheck.is(':checked')){
             this.simTimeInput.attr('disabled', 'disabled');
+        }
+        else{
+            this.simTimeInput.removeAttr('disabled');
         }
     }
 
@@ -52,7 +60,16 @@ class Processor {
  
  
     }
-
+    step(){
+        if (!this.checkConditions() || !this.initialized) {
+            if (!this.initialized) this.drawingTool.warning('You have to initialize first');
+            else this.drawingTool.warning("wrong input!");
+            return;
+        }
+        this.cellZone.doStep();
+        this.drawingTool.render(this.cellZone.array, this.cellSizeInput.val());
+        this.timeDisplay.text('time: ' + (this.timeDisplay.text().replace('time: ' ,"")*1 + 0.03).toFixed(2));
+    }
     run() {
  
         if (!this.checkConditions() || !this.initialized) {
@@ -104,7 +121,7 @@ class Processor {
         this.stop = true;
         this.timeDisplay.text('time: 0');
         this.initialized = false; 
-        
+
         if (!$.isNumeric(this.heightInput.val())) alert('nie bangla');
         if (!$.isNumeric(this.widthInput.val())) alert('nie bangla');
         this.drawingTool.resize(this.widthInput.val(), this.heightInput.val() )

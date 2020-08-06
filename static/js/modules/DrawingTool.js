@@ -6,14 +6,43 @@ class DrawingTool {
         this.ctx           = this.canvas.getContext("2d");
         this.resize();
         this.allowDraw = $('#allow-draw');
-        
-  
+
+        this.drawButton = $("#draw-button");
+        this.eraseButton = $("#erase");
+        this.draw = true;
+        this.events();
     }
 
-    test() {
+    events(){
+        this.drawButton.on('click', () => {
+            this.draw = true;
+            this.drawButton.removeClass('btn-outline-success');
+            this.drawButton.addClass('btn-success');
+            this.eraseButton.addClass('btn-outline-danger');
+            this.eraseButton.removeClass('btn-danger');
+        })
+        this.eraseButton.on('click', () => {
+            this.draw = false;
+            this.drawButton.addClass('btn-outline-success');
+            this.drawButton.removeClass('btn-success');
+            this.eraseButton.removeClass('btn-outline-danger');
+            this.eraseButton.addClass('btn-danger');
+        })
+        this.allowDraw.on('click', () => {
+            if(this.allowDraw.is(':checked')){
+                this.drawButton.removeClass('d-none');
+                this.eraseButton.removeClass('d-none');
+                this.drawButton.collapse('show');
+                this.eraseButton.collapse('show');
+            }
+            else{
+                this.drawButton.collapse('hide');
+                this.eraseButton.collapse('hide');
+            }
 
-        this.ctx.fillRect(50, 50, 50, 50);
+        })
     }
+
 
     render(array, cellSize) {
         this.clear();
@@ -46,10 +75,10 @@ class DrawingTool {
         let yi = Math.floor((y-rect.top)/cellSize);
     
         let col = [...array[xi]];
-        col[yi] = 1;
+        col[yi] = this.draw ? 1 : 0;
         array[xi] = col;
      
-        this.ctx.fillStyle = "green";
+        this.draw ? this.ctx.fillStyle = "green" :  this.ctx.fillStyle = "black";
         this.ctx.fillRect(xi*cellSize, yi*cellSize, cellSize, cellSize);
         
     }
@@ -59,6 +88,7 @@ class DrawingTool {
         this.ctx.fillStyle = "red";
         this.ctx.textAlign = "center";
         this.ctx.fillText(text, this.canvas.width/2, this.canvas.height/2);
+
     }
 
 }
