@@ -1,0 +1,16 @@
+#canvas {
+    border: 2px solid black;
+    background-color: black;
+
+}
+.control-panel{
+    margin: 5px;
+
+}
+input{
+    width: 5vw;
+}
+
+label{
+    display: inline-block;
+}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+ {%block head %}
+
+{%endblock %}
+
+
+ {%block body %}
+<div class="container-fluid">
+        <div class="row flex-xl-nowrap">
+
+            <div class="col-md-3 col-xl-3 control-panel">
+                <h1>Game of life</h1>
+               
+                    <div class=" flex justify-content-center">
+                        <hr>
+                        <div class="row flex">
+                            <div class="col-4  justify-content-center">
+                                <label>cell size</label>
+                                <input class="form-control" id="cell-size" value="20" >
+
+                            </div>
+                            <div class="col-4  justify-content-center">
+                                <label>cells density</label>
+                                <input class="form-control" id="cell-density" value="0.2">
+                            </div>  
+                            <div class="col-4  justify-content-center">
+                                <label>end time</label>
+                                <input type="checkbox" checked style="width: auto; float: right; margin-top: 7px;" id='enable-end'>
+                                <input class="form-control" id="sim-time" value="5">
+                            </div>  
+                        </div>
+                       
+                        <hr>
+                  
+                                <button class="btn mx-1 btn-outline-primary" id="initialize">Initialize</button>
+                                <button class="btn  btn-outline-danger"  id="stop">Stop</button>
+                                <button class="btn mx-1 btn-outline-success " style="float: right;" id="run">Run</button>
+                                
+                          
+
+
+                        <hr>
+                        <div class="row flex">
+                            <div class="col-4  justify-content-center">
+                                <label > width  </label>
+                                <input class="form-control" id='width' value = '500'>
+
+                            </div>
+                            <div class="col-4  justify-content-center">
+                                <label>height</label>
+                                <input class="form-control" id="height" value = '500'>
+                            </div>  
+
+                            <div class="col-4  d-flex justify-content-end">
+                                <button class="btn btn-outline-secondary" id="resize" style=" margin-top: auto; float: right;">Resize</button>
+                            </div> 
+
+                        </div>
+                        <hr>
+                        
+                        <input type="checkbox" class="form-check-input" style="position: relative;" id="allow-draw">
+                            <label class="form-check-label" for='allow-draw'>let me draw</label>
+                        
+                    </div>
+                   
+              
+                
+            </div>
+            <div class="col-md-9  justify-content-center">
+                <canvas id="canvas" class=""></canvas>
+                <div>
+                    <hr>
+                    <p id="current-time">time: 0</p>
+                </div>
+            </div>
+ 
+        </div>
+    </div>
+{%endblock %}
