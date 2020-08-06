@@ -5,6 +5,8 @@ class DrawingTool {
         this.canvas        = document.querySelector('#canvas');
         this.ctx           = this.canvas.getContext("2d");
         this.resize();
+        this.makeGrid();
+        
         this.allowDraw = $('#allow-draw');
 
         this.drawButton = $("#draw-button");
@@ -54,19 +56,44 @@ class DrawingTool {
             }
            
         }
+        this.makeGrid(cellSize);
         
     }
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
     }
 
     resize(width = 500,height =500){
       
         this.canvas.width = width;
         this.canvas.height = height;
-
         
+        
+    }
+
+    makeGrid(cellSize = 20){
+        if (cellSize < 10) return;
+        var x = Math.floor(this.canvas.width/cellSize);
+        var y = Math.floor(this.canvas.height/cellSize);
+        this.ctx.strokeStyle = "grey";
+        this.ctx.lineWidth = 1;
+        for (var i = 0 ; i<= x ; i++){
+            this.ctx.beginPath();
+          
+            this.ctx.moveTo(cellSize*i, 0);
+            this.ctx.lineTo(cellSize*i, this.canvas.height);
+            this.ctx.stroke();
+        }
+
+        for (var j = 0 ; j<=y ; j++){
+            this.ctx.beginPath();
+            
+            this.ctx.moveTo(0, cellSize*j);
+            this.ctx.lineTo(this.canvas.width, cellSize*j);
+            this.ctx.stroke();
+        }
     }
 
     fillCell(x, y, cellSize, array){
@@ -77,10 +104,10 @@ class DrawingTool {
         let col = [...array[xi]];
         col[yi] = this.draw ? 1 : 0;
         array[xi] = col;
-     
-        this.draw ? this.ctx.fillStyle = "green" :  this.ctx.fillStyle = "black";
+        this.render(array, cellSize)
+/*         this.draw ? this.ctx.fillStyle = "green" :  this.ctx.fillStyle = "black";
         this.ctx.fillRect(xi*cellSize, yi*cellSize, cellSize, cellSize);
-        
+        this.ctx.strokeRect(xi*cellSize, yi*cellSize, cellSize, cellSize); */
     }
     warning(text){
         this.clear();

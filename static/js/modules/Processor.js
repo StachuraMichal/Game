@@ -41,7 +41,9 @@ class Processor {
         this.allowDrawCheck.on("click", this.allowDrawFun.bind(this));
         this.stopButton.on('click', () => { this.stop = true;});
         this.enableEndCheck.on('click', this.enableEnd.bind(this));
-        this.cellSizeInput.on('input', () =>{ this.stop = true; this.resize()})
+        this.cellSizeInput.on('input', () =>{ 
+            this.stop = true; 
+            this.resize()})
         this.stepButton.on('click', this.step.bind(this));
 
     }
@@ -56,7 +58,11 @@ class Processor {
 
     allowDrawFun(){
         this.allowDraw = this.allowDrawCheck.is(':checked');
-        if(!this.initialized) this.drawingTool.clear();
+        if(!this.initialized){
+            this.drawingTool.clear();
+            this.drawingTool.makeGrid(this.cellSizeInput.val());
+
+        }
         this.initialized = true;    
  
  
@@ -67,6 +73,7 @@ class Processor {
             else this.drawingTool.warning("wrong input!");
             return;
         }
+        this.stop = true;
         this.cellZone.doStep();
         this.drawingTool.render(this.cellZone.array, this.cellSizeInput.val());
         this.timeDisplay.text('time: ' + (this.timeDisplay.text().replace('time: ' ,"")*1 + 0.03).toFixed(2));
@@ -108,6 +115,7 @@ class Processor {
         this.cellZone.fillRandom(this.cellDensityInput.val());
         var myarr = [...this.cellZone.array];
         this.drawingTool.render(myarr, this.cellSizeInput.val());
+        
         this.initialized = true;
     }
 
@@ -123,9 +131,17 @@ class Processor {
         this.timeDisplay.text('time: 0');
         this.initialized = false; 
 
-        if (!$.isNumeric(this.heightInput.val())) alert('nie bangla');
-        if (!$.isNumeric(this.widthInput.val())) alert('nie bangla');
-        this.drawingTool.resize(this.widthInput.val(), this.heightInput.val() )
+        if (!$.isNumeric(this.heightInput.val())) {
+            this.drawingTool.warning("wrong input!");
+            return;
+        }
+        if (!$.isNumeric(this.widthInput.val())) {
+            this.drawingTool.warning("wrong input!");
+            return;
+        }
+        
+        this.drawingTool.resize(this.widthInput.val(), this.heightInput.val() );
+        this.drawingTool.makeGrid(this.cellSizeInput.val());
         let width = Math.floor(this.drawingTool.canvas.width / this.cellSizeInput.val());
         let height = Math.floor(this.drawingTool.canvas.height / this.cellSizeInput.val());
         this.cellZone.setDimensions(width, height);
