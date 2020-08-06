@@ -56,6 +56,7 @@ class Processor {
 
     allowDrawFun(){
         this.allowDraw = this.allowDrawCheck.is(':checked');
+        if(!this.initialized) this.drawingTool.clear();
         this.initialized = true;    
  
  
